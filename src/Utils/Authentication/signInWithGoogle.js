@@ -3,11 +3,11 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
-export async function signInWithGoogle(auth) {
+export async function signInWithGoogle() {
   const provider = new firebase.auth.GoogleAuthProvider();
-  auth.useDeviceLanguage();
+  firebase.auth().useDeviceLanguage();
   try {
-    await auth.signInWithPopup(provider);
+    await firebase.auth().signInWithPopup(provider);
   } catch (error) {
     console.error(error);
   }

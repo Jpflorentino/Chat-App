@@ -5,11 +5,14 @@ import "firebase/firestore";
 
 // Styles
 import "semantic-ui-css/semantic.min.css";
-import GoogleButton from "react-google-button";
+import "./style/appStyle.css";
+import { BrowserRouter as Router } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 // Custom components and functions
-import { signInWithGoogle } from "./Utils/Authentication/signInWithGoogle";
+import { addUser } from "./utils/db/dbOperations";
+import { Navbar } from "./utils/components/Navbar";
+import { MyForm } from "./utils/components/MyForm";
 
 firebase.initializeApp({
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -24,7 +27,7 @@ firebase.initializeApp({
 
 const auth = firebase.auth();
 
-function App() {
+export default function App() {
   const [user, setUser] = useState(() => auth.currentUser);
   const [initialization, setInitialization] = useState(true);
 
@@ -32,6 +35,7 @@ function App() {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setUser(user);
+        addUser(user);
       } else {
         setUser(null);
       }
@@ -40,10 +44,16 @@ function App() {
       }
     });
     return unsubscribe;
-  }, [initialization]);
+  }, [initialization, user]);
 
   if (initialization) return "Loading...";
-  return <div>{user ? "Welcome to chat" : <GoogleButton type="dark" onClick={signInWithGoogle(auth)} />}</div>;
-}
 
-export default App;
+  return (
+    <div className="App">
+      <Router>
+        <Navbar user={user} />
+      </Router>
+      <MyForm />
+    </div>
+  );
+}

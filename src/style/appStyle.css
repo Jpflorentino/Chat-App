@@ -1,0 +1,12 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #282a36;
+}
+
+.App {
+  height: auto;
+  width: auto;
+  background-color: #282a36;
+}
