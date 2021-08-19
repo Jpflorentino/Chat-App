@@ -1,7 +1,5 @@
 // Firebase deps
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+import firebaseConfig from "./utils/config/firebaseConfig";
 
 // Styles
 import "semantic-ui-css/semantic.min.css";
@@ -13,23 +11,18 @@ import { useEffect, useState } from "react";
 import { addUser } from "./utils/db/dbOperations";
 import { Navbar } from "./utils/components/Navbar";
 import { MyForm } from "./utils/components/MyForm";
+import { handlerLogin, handlerSignUp, handlerLogout } from "./utils/handlerCollection/handlers";
 
-firebase.initializeApp({
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  apiKey: "AIzaSyCAe8GlI3_qgEyyuIXR3YXvVPrvfcQUMkc",
-  authDomain: "chat-app-23e69.firebaseapp.com",
-  projectId: "chat-app-23e69",
-  storageBucket: "chat-app-23e69.appspot.com",
-  messagingSenderId: "653274622575",
-  appId: "1:653274622575:web:ce6300ae3c734f3f28bb9a",
-  measurementId: "G-DX589W6QQV",
-});
-
-const auth = firebase.auth();
+const auth = firebaseConfig.auth();
 
 export default function App() {
   const [user, setUser] = useState(() => auth.currentUser);
   const [initialization, setInitialization] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [hasAccount, setHasAccount] = useState(false);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -48,12 +41,35 @@ export default function App() {
 
   if (initialization) return "Loading...";
 
-  return (
-    <div className="App">
-      <Router>
-        <Navbar user={user} />
-      </Router>
-      <MyForm />
-    </div>
-  );
+  if (user) {
+    return (
+      <div className="App">
+        <Router>
+          <Navbar user={user} handlerLogout={handlerLogout} />
+        </Router>
+      </div>
+    );
+  } else {
+    return (
+      <div className="App">
+        <Router>
+          <Navbar user={user} handlerLogout={handlerLogout} />
+        </Router>
+        <MyForm
+          email={email}
+          setEmail={setEmail}
+          password={password}
+          setPassword={setPassword}
+          handlerLogin={handlerLogin}
+          handlerSignUp={handlerSignUp}
+          hasAccount={hasAccount}
+          setHasAccount={setHasAccount}
+          emailError={emailError}
+          passwordError={passwordError}
+          setEmailError={setEmailError}
+          setPasswordError={setPasswordError}
+        />
+      </div>
+    );
+  }
 }

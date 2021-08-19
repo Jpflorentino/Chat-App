@@ -1,8 +1,8 @@
 import React from "react";
 import { Menu, Segment, Header } from "semantic-ui-react";
 import logo from "../../images/logo192.png";
-import { signOut } from "../authentication/signOut";
 import { removeUser } from "../db/dbOperations";
+import { handlerLogout } from "../handlerCollection/handlers";
 
 export function Navbar({ user }) {
   if (user) {
@@ -10,14 +10,14 @@ export function Navbar({ user }) {
       <Segment inverted>
         <Menu inverted secondary>
           <Segment inverted compact>
-            <Header as="h1" image={logo} size="small" verticalAlign="middle" content="Chat-App" />
+            <Header as="h1" image={logo} size="small" content="Chat-App" />
           </Segment>
           <Menu.Item
             position="right"
             name="logout"
             onClick={() => {
               removeUser(user);
-              signOut();
+              handlerLogout();
             }}>
             Logout
           </Menu.Item>
@@ -29,7 +29,7 @@ export function Navbar({ user }) {
       <Segment inverted>
         <Menu inverted secondary>
           <Segment inverted compact>
-            <Header as="h1" image={logo} size="small" verticalAlign="middle" content="Chat-App" />
+            <Header as="h1" image={logo} size="small" content="Chat-App" />
           </Segment>
         </Menu>
       </Segment>

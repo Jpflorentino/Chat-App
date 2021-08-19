@@ -1,12 +1,10 @@
 // Firebase deps
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+import firebaseConfig from "../config/firebaseConfig";
 
 // Add user to firestore
 export async function addUser(user) {
   try {
-    await firebase.firestore().collection("users").doc(user.uid).set({
+    await firebaseConfig.firestore().collection("users").doc(user.uid).set({
       id: user.uid,
       name: user.displayName,
       email: user.email,
@@ -21,10 +19,10 @@ export async function addUser(user) {
 // Remove user to firestore
 export async function removeUser(user) {
   try {
-    const users = await firebase.firestore().collection("users").where("id", "==", user.uid).get();
+    const users = await firebaseConfig.firestore().collection("users").where("id", "==", user.uid).get();
     users.forEach(async (document) => {
       try {
-        await firebase.firestore().collection("users").doc(document.data().id).delete();
+        await firebaseConfig.firestore().collection("users").doc(document.data().id).delete();
       } catch (error) {
         console.error(error);
       }
