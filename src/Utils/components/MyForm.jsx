@@ -3,7 +3,7 @@ import GoogleButton from "react-google-button";
 import { Form, Button, Container, Grid, Divider } from "semantic-ui-react";
 import { signInWithGoogle } from "../handlerCollection/handlers";
 
-export function MyForm({ email, setEmail, password, setPassword, handlerLogin, handlerSignUp, hasAccount, setHasAccount, emailError, passwordError, setEmailError, setPasswordError }) {
+export function MyForm({ email, setEmail, password, setPassword, handlerLogin, handlerSignUp, hasAccount, setHasAccount }) {
   return (
     <Container>
       <Grid>
@@ -12,7 +12,6 @@ export function MyForm({ email, setEmail, password, setPassword, handlerLogin, h
             <Form inverted>
               <Form.Group widths="equal" grouped>
                 <Form.Input fluid icon="user" iconPosition="left" label="Email" type="email" placeholder="Insert Email..." required value={email} onChange={(e) => setEmail(e.target.value)} />
-                <p className="errorMsg"> {emailError}</p>
                 <Form.Input
                   fluid
                   icon="lock"
@@ -24,13 +23,12 @@ export function MyForm({ email, setEmail, password, setPassword, handlerLogin, h
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <p className="errorMsg">{passwordError}</p>
               </Form.Group>
               {hasAccount ? (
                 <>
                   <Button
                     onClick={() => {
-                      handlerLogin(email, password, setEmailError, setPasswordError);
+                      handlerLogin(email, password);
                     }}>
                     Sign in
                   </Button>
@@ -42,7 +40,7 @@ export function MyForm({ email, setEmail, password, setPassword, handlerLogin, h
                 <>
                   <Button
                     onClick={() => {
-                      handlerSignUp(email, password, setEmailError, setPasswordError);
+                      handlerSignUp(email, password);
                     }}>
                     Sign up
                   </Button>

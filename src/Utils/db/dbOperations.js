@@ -2,15 +2,27 @@
 import firebaseConfig from "../config/firebaseConfig";
 
 // Add user to firestore
-export async function addUser(user) {
+export async function addUser(user, gsReference) {
   try {
-    await firebaseConfig.firestore().collection("users").doc(user.uid).set({
-      id: user.uid,
-      name: user.displayName,
-      email: user.email,
-      avatar: user.photoURL,
-      chats: [],
-    });
+    if (user.photoURL) {
+      await firebaseConfig.firestore().collection("users").doc(user.uid).set({
+        id: user.uid,
+        name: user.displayName,
+        email: user.email,
+        avatar: user.photoURL,
+        chats: [],
+      });
+    } else {
+      gsReference.getDownloadURL().then(async (url) => {
+        await firebaseConfig.firestore().collection("users").doc(user.uid).set({
+          id: user.uid,
+          name: user.email,
+          email: user.email,
+          avatar: url,
+          chats: [],
+        });
+      });
+    }
   } catch (error) {
     console.error(error);
   }

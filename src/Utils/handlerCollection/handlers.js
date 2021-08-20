@@ -4,9 +4,21 @@ import "firebase/auth";
 import "firebase/firestore";
 import firebaseConfig from "../config/firebaseConfig";
 
-export async function handlerLogin() {}
+export async function handlerSignUp(email, password) {
+  try {
+    await firebaseConfig.auth().createUserWithEmailAndPassword(email, password);
+  } catch (error) {
+    alert(error.message);
+  }
+}
 
-export function handlerSignUp() {}
+export async function handlerLogin(email, password) {
+  try {
+    await firebaseConfig.auth().signInWithEmailAndPassword(email, password);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 export async function handlerLogout() {
   try {

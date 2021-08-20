@@ -14,21 +14,21 @@ import { MyForm } from "./utils/components/MyForm";
 import { handlerLogin, handlerSignUp, handlerLogout } from "./utils/handlerCollection/handlers";
 
 const auth = firebaseConfig.auth();
+const storage = firebaseConfig.storage();
+const gsReference = storage.refFromURL("gs://chat-app-23e69.appspot.com/images/emailUser.png");
 
 export default function App() {
   const [user, setUser] = useState(() => auth.currentUser);
   const [initialization, setInitialization] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
   const [hasAccount, setHasAccount] = useState(false);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setUser(user);
-        addUser(user);
+        addUser(user, gsReference);
       } else {
         setUser(null);
       }
@@ -64,10 +64,6 @@ export default function App() {
           handlerSignUp={handlerSignUp}
           hasAccount={hasAccount}
           setHasAccount={setHasAccount}
-          emailError={emailError}
-          passwordError={passwordError}
-          setEmailError={setEmailError}
-          setPasswordError={setPasswordError}
         />
       </div>
     );
