@@ -8,10 +8,11 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 // Custom components and functions
-import { addUser } from "./utils/db/dbOperations";
+import { addUser, getUser } from "./utils/db/dbOperations";
 import { Navbar } from "./utils/components/Navbar";
 import { MyForm } from "./utils/components/MyForm";
 import { handlerLogin, handlerSignUp, handlerLogout } from "./utils/handlerCollection/handlers";
+import { ListChats } from "./utils/components/ListChats";
 
 const auth = firebaseConfig.auth();
 const storage = firebaseConfig.storage();
@@ -25,9 +26,10 @@ export default function App() {
   const [hasAccount, setHasAccount] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        setUser(user);
+        const dbUser = await getUser(user);
+        setUser(dbUser);
         addUser(user, gsReference);
       } else {
         setUser(null);
@@ -47,6 +49,7 @@ export default function App() {
         <Router>
           <Navbar user={user} handlerLogout={handlerLogout} />
         </Router>
+        <ListChats user={user}></ListChats>
       </div>
     );
   } else {

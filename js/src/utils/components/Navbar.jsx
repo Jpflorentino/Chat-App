@@ -12,15 +12,19 @@ export function Navbar({ user }) {
           <Segment inverted compact>
             <Header as="h1" image={logo} size="small" content="Chat-App" />
           </Segment>
-          <Menu.Item
-            position="right"
-            name="logout"
-            onClick={() => {
-              removeUser(user);
-              handlerLogout();
-            }}>
-            Logout
-          </Menu.Item>
+          <Menu.Menu position="right">
+            <Menu.Item name="user" onClick={() => {}}>
+              {user.name}
+            </Menu.Item>
+            <Menu.Item
+              name="logout"
+              onClick={() => {
+                removeUser(user);
+                handlerLogout();
+              }}>
+              Logout
+            </Menu.Item>
+          </Menu.Menu>
         </Menu>
       </Segment>
     );

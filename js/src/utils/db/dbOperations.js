@@ -31,14 +31,38 @@ export async function addUser(user, gsReference) {
 // Remove user to firestore
 export async function removeUser(user) {
   try {
-    const users = await firebaseConfig.firestore().collection("users").where("id", "==", user.uid).get();
-    users.forEach(async (document) => {
-      try {
-        await firebaseConfig.firestore().collection("users").doc(document.data().id).delete();
-      } catch (error) {
-        console.error(error);
-      }
-    });
+    await firebaseConfig.firestore().collection("users").doc(user.id).delete();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function getUser(user) {
+  try {
+    const userDocument = await firebaseConfig.firestore().collection("users").doc(user.uid).get();
+    return userDocument.data();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function addChatToUser(user, inputValue) {
+  try {
+    await firebaseConfig
+      .firestore()
+      .collection("users")
+      .doc(user.id)
+      .update({
+        chats: firebaseConfig.firestore.FieldValue.arrayUnion(inputValue),
+      });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function getAllChatsFromUser(user) {
+  try {
+    await firebaseConfig.firestore().collection("users").doc(user.id);
   } catch (error) {
     console.error(error);
   }
