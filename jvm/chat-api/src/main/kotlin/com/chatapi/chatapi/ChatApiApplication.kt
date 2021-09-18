@@ -1,11 +1,11 @@
-package com.example.chatapp
+package com.chatapi.chatapi
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class ChatAppApplication
+class ChatApiApplication
 
 fun main(args: Array<String>) {
-	runApplication<ChatAppApplication>(*args)
+	runApplication<ChatApiApplication>(*args)
 }
